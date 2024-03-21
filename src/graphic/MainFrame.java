@@ -1,5 +1,8 @@
 package graphic;
 
+import algorithms.SinglePointProcessing;
+import enums.GreyScaleType;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -34,6 +37,11 @@ public class MainFrame extends JFrame implements ActionListener {
         menu.copy.addActionListener(this);
         menu.clearLeft.addActionListener(this);
         menu.clearRight.addActionListener(this);
+        menu.toGreyAvgScale.addActionListener(this);
+        menu.toGreyRedScale.addActionListener(this);
+        menu.toGreyGreenScale.addActionListener(this);
+        menu.toGreyBlueScale.addActionListener(this);
+        menu.toGreyYUVScale.addActionListener(this);
     }
 
     private void matchTheContent() {
@@ -51,7 +59,21 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.COPY_TEXT -> copyLeftToRight();
             case FrameMenu.CLEAR_RIGHT_TEXT -> leftPanel.clearPanel();
             case FrameMenu.CLEAR_LEFT_TEXT -> rightPanel.clearPanel();
+            case FrameMenu.TO_GREY_AVG_TEXT -> toGrey(GreyScaleType.Average);
+            case FrameMenu.TO_GREY_RED_TEXT -> toGrey(GreyScaleType.Red);
+            case FrameMenu.TO_GREY_GREEN_TEXT -> toGrey(GreyScaleType.Green);
+            case FrameMenu.TO_GREY_BLUE_TEXT -> toGrey(GreyScaleType.Blue);
+            case FrameMenu.TO_GREY_YUV_TEXT -> toGrey(GreyScaleType.YUV);
         }
+    }
+
+    private void toGrey(GreyScaleType type) {
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        SinglePointProcessing toGreyAvg = new SinglePointProcessing(leftPanel.canvas);
+        rightPanel.copy(toGreyAvg.toGreyScale(type));
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+            matchTheContent();
     }
 
     private void copyLeftToRight() {
