@@ -57,8 +57,8 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.SAVE_FILE_TEXT -> saveFile();
             case FrameMenu.CLOSE_TEXT -> System.exit(0);
             case FrameMenu.COPY_TEXT -> copyLeftToRight();
-            case FrameMenu.CLEAR_RIGHT_TEXT -> leftPanel.clearPanel();
-            case FrameMenu.CLEAR_LEFT_TEXT -> rightPanel.clearPanel();
+            case FrameMenu.CLEAR_RIGHT_TEXT -> rightPanel.clearPanel();
+            case FrameMenu.CLEAR_LEFT_TEXT -> leftPanel.clearPanel();
             case FrameMenu.TO_GREY_AVG_TEXT -> toGrey(GreyScaleType.Average);
             case FrameMenu.TO_GREY_RED_TEXT -> toGrey(GreyScaleType.Red);
             case FrameMenu.TO_GREY_GREEN_TEXT -> toGrey(GreyScaleType.Green);
@@ -96,7 +96,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 "jpg", "bmp", "jpg"
         );
         fileChooser.setFileFilter(filter);
-        int result = fileChooser.showOpenDialog(this);
+        int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION){
             filePath = fileChooser.getSelectedFile().getPath();
             rightPanel.saveFile(filePath);

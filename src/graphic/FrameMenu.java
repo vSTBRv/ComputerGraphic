@@ -18,6 +18,8 @@ public class FrameMenu extends JMenuBar {
     public static final String TO_GREY_GREEN_TEXT = "To grey(GREEN.) scale";
     public static final String TO_GREY_BLUE_TEXT = "To grey(BLUE) scale";
     public static final String TO_GREY_YUV_TEXT = "To grey(YUV) scale";
+    public static final String CHANGE_BRIGHTNESS_TEXT = "Change brightness";
+    public static final String CHANGE_CONTRAST_TEXT = "Change contrast";
 
     JMenu file = new JMenu(FrameMenu.FILE_TEXT);
     JMenuItem openFile = new JMenuItem(FrameMenu.OPEN_FILE_TEXT);
@@ -34,6 +36,8 @@ public class FrameMenu extends JMenuBar {
     JMenuItem toGreyGreenScale = new JMenuItem(FrameMenu.TO_GREY_GREEN_TEXT);
     JMenuItem toGreyBlueScale = new JMenuItem(FrameMenu.TO_GREY_BLUE_TEXT);
     JMenuItem toGreyYUVScale = new JMenuItem(FrameMenu.TO_GREY_YUV_TEXT);
+    JMenuItem changeBrightness = new JMenuItem(FrameMenu.CHANGE_BRIGHTNESS_TEXT);
+    JMenuItem changeContrast = new JMenuItem(FrameMenu.CHANGE_CONTRAST_TEXT);
 
     public FrameMenu(){
         file.add(openFile);
@@ -54,6 +58,8 @@ public class FrameMenu extends JMenuBar {
         singlePointProcessing.add(toGreyGreenScale);
         singlePointProcessing.add(toGreyBlueScale);
         singlePointProcessing.add(toGreyYUVScale);
+        singlePointProcessing.add(changeBrightness);
+        singlePointProcessing.add(changeContrast);
         this.add(singlePointProcessing);
     }
 }
