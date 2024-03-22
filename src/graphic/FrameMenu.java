@@ -20,6 +20,8 @@ public class FrameMenu extends JMenuBar {
     public static final String TO_GREY_YUV_TEXT = "To grey(YUV) scale";
     public static final String CHANGE_BRIGHTNESS_TEXT = "Change brightness";
     public static final String CHANGE_CONTRAST_TEXT = "Change contrast";
+    public static final String NEGATION_TEXT = "Negation";
+    public static final String CHANGE_BRIGHTNESS_RANGE_TEXT = "Change brightness range";
 
     JMenu file = new JMenu(FrameMenu.FILE_TEXT);
     JMenuItem openFile = new JMenuItem(FrameMenu.OPEN_FILE_TEXT);
@@ -38,6 +40,8 @@ public class FrameMenu extends JMenuBar {
     JMenuItem toGreyYUVScale = new JMenuItem(FrameMenu.TO_GREY_YUV_TEXT);
     JMenuItem changeBrightness = new JMenuItem(FrameMenu.CHANGE_BRIGHTNESS_TEXT);
     JMenuItem changeContrast = new JMenuItem(FrameMenu.CHANGE_CONTRAST_TEXT);
+    JMenuItem negation = new JMenuItem(FrameMenu.NEGATION_TEXT);
+    JMenuItem changeBrightnessRange = new JMenuItem(FrameMenu.CHANGE_BRIGHTNESS_RANGE_TEXT);
 
     public FrameMenu(){
         file.add(openFile);
@@ -60,6 +64,8 @@ public class FrameMenu extends JMenuBar {
         singlePointProcessing.add(toGreyYUVScale);
         singlePointProcessing.add(changeBrightness);
         singlePointProcessing.add(changeContrast);
+        singlePointProcessing.add(negation);
+        singlePointProcessing.add(changeBrightnessRange);
         this.add(singlePointProcessing);
     }
 }

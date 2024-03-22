@@ -9,9 +9,17 @@ public class SinglePointProcessing {
 
     BufferedImage canvas;
     BufferedImage originalImage;
-    public SinglePointProcessing(BufferedImage originalImage){
+    private static final SinglePointProcessing INSTANCE = new SinglePointProcessing();
+
+    public static SinglePointProcessing getINSTANCE() {
+        return INSTANCE;
+    }
+    public void loadImage(BufferedImage originalImage){
         this.originalImage = originalImage;
         canvas = new BufferedImage(originalImage.getWidth(),originalImage.getHeight(),BufferedImage.TYPE_INT_RGB);
+    }
+
+    private SinglePointProcessing(){
     }
     public BufferedImage toGreyScale(GreyScaleType type){
         Color color;
