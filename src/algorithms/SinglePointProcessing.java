@@ -83,22 +83,8 @@ public class SinglePointProcessing {
         }
         return canvas;
     }
-    public BufferedImage changeBrightnessRange(int min, int max){
-        Color color;
-        int r, g, b;
-        for (int w = 0; w < originalImage.getWidth(); w++){
-            for (int h = 0; h < originalImage.getHeight(); h++){
-                color = new Color(originalImage.getRGB(w,h));
-                r = (255 * (color.getRed() - min))/(max - min);
-                g = (255 * (color.getGreen() - min))/(max - min);
-                b = (255 * (color.getBlue() - min))/(max - min);
-
-
-                canvas.setRGB(
-                        w, h, new Color(r, g, b).getRGB()
-                );
-            }
-        }
+    public BufferedImage changeBrightnessRange(){
+        //TODO
         return canvas;
     }
     public BufferedImage negation(){
