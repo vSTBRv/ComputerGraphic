@@ -61,7 +61,7 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.OPEN_FILE_TEXT -> openFile();
             case FrameMenu.SAVE_FILE_TEXT -> saveFile();
             case FrameMenu.CLOSE_TEXT -> System.exit(0);
-            case FrameMenu.COPY_TEXT -> copyLeftToRight();
+            case FrameMenu.COPY_TEXT -> copyRightToLeft();
             case FrameMenu.CLEAR_RIGHT_TEXT -> rightPanel.clearPanel();
             case FrameMenu.CLEAR_LEFT_TEXT -> leftPanel.clearPanel();
             case FrameMenu.TO_GREY_AVG_TEXT -> toGrey(GreyScaleType.Average);
@@ -139,11 +139,11 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void copyLeftToRight() {
-        int with = rightPanel.canvas.getWidth();
-        int height = rightPanel.canvas.getHeight();
-        rightPanel.copy(leftPanel.canvas);
-        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+    private void copyRightToLeft() {
+        int with = leftPanel.canvas.getWidth();
+        int height = leftPanel.canvas.getHeight();
+        leftPanel.copy(rightPanel.canvas);
+        if (with != leftPanel.canvas.getWidth() || height != leftPanel.canvas.getHeight())
             matchTheContent();
     }
 
