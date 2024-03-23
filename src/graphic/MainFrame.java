@@ -155,8 +155,8 @@ public class MainFrame extends JFrame implements ActionListener {
             fileChooser = new JFileChooser();
         }
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "JPG, BMP & JPG",
-                "jpg", "bmp", "jpg"
+                "JPG, BMP & PNG",
+                "jpg", "bmp", "PNG"
         );
         fileChooser.setFileFilter(filter);
         int result = fileChooser.showSaveDialog(this);

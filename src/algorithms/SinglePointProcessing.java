@@ -104,15 +104,12 @@ public class SinglePointProcessing {
     public BufferedImage negation(){
         Color color;
         int r, g, b;
-        int maxR = findMax(GreyScaleType.Red);
-        int maxG = findMax(GreyScaleType.Green);
-        int maxB = findMax(GreyScaleType.Blue);
         for (int w = 0; w < originalImage.getWidth(); w++){
             for (int h = 0; h < originalImage.getHeight(); h++){
                 color = new Color(originalImage.getRGB(w,h));
-                r = maxR - color.getRed();
-                g = maxG - color.getGreen();
-                b = maxB - color.getBlue();
+                r = 255 - color.getRed();
+                g = 255 - color.getGreen();
+                b = 255 - color.getBlue();
                 canvas.setRGB(
                         w, h, new Color(r, g, b).getRGB()
                 );
@@ -125,22 +122,5 @@ public class SinglePointProcessing {
         if (value > 255){
             return 255;
         }else return Math.max(value, 0);
-    }
-    private int findMax(GreyScaleType type){
-        int value = 0;
-        int tmp = 0;
-        Color color;
-        for (int w = 0; w < originalImage.getWidth(); w++) {
-            for (int h = 0; h < originalImage.getHeight(); h++) {
-                color = new Color(originalImage.getRGB(w, h));
-                switch (type){
-                    case Red -> tmp = color.getRed();
-                    case Green -> tmp = color.getGreen();
-                    case Blue -> tmp = color.getBlue();
-                }
-                if (tmp > value) value = tmp;
-            }
-        }
-        return value;
     }
 }
