@@ -19,7 +19,7 @@ public class MainFrame extends JFrame implements ActionListener {
     public MainFrame() throws HeadlessException{
         super(TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         setLayout(
                 new FlowLayout(FlowLayout.CENTER,2,2)
         );
@@ -77,7 +77,13 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void setBrightnessRange() {
-        //TODO
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
+        BufferedImage greyImage = SinglePointProcessing.getINSTANCE().changeBrightnessRange();
+        rightPanel.copy(greyImage);
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+            matchTheContent();
     }
 
     private void toGrey(GreyScaleType type) {
