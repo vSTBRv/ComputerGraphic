@@ -105,43 +105,42 @@ public class MainFrame extends JFrame implements ActionListener {
             matchTheContent();}
     }
     private void setContrast() {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 200, 100);
-        slider.setMajorTickSpacing(25);
-        slider.setMinorTickSpacing(5);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-
-        int result = JOptionPane.showConfirmDialog(null, slider, "Change contrast",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            double contrastValue = slider.getValue() / 100.0;
-            SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
-            BufferedImage image = SinglePointProcessing.getINSTANCE().changeContrast(contrastValue);
-            rightPanel.copy(image);
-            int with = rightPanel.canvas.getWidth();
-            int height = rightPanel.canvas.getHeight();
-            if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
-                matchTheContent();}
+        String value =  JOptionPane.showInputDialog("Enter a positive value");
+        if (value != null) {
+            try {
+                double contrastValue = Double.parseDouble(value);
+                if(contrastValue > 0) {
+                    SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
+                    BufferedImage image = SinglePointProcessing.getINSTANCE().changeContrast(contrastValue);
+                    rightPanel.copy(image);
+                    int with = rightPanel.canvas.getWidth();
+                    int height = rightPanel.canvas.getHeight();
+                    if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()) {
+                        matchTheContent();
+                    }
+                }else JOptionPane.showMessageDialog(null,"Entered invalid value");
+            } catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Invalid value");
+            }
         }
     }
     private void setBrightness() {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, -255, 255, 10);
-        slider.setMajorTickSpacing(100);
-        slider.setMinorTickSpacing(100);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-
-        int result = JOptionPane.showConfirmDialog(null, slider, "Change brightness",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            int brightnessValue = slider.getValue();
-            SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
-            BufferedImage image = SinglePointProcessing.getINSTANCE().changeBrightness(brightnessValue);
-            rightPanel.copy(image);
-            int with = rightPanel.canvas.getWidth();
-            int height = rightPanel.canvas.getHeight();
-            if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
-            matchTheContent();}
+        String value = JOptionPane.showInputDialog("Enter value");
+        if(value != null){
+            try{
+                int brightnessValue = Integer.parseInt(value);
+                if(-255 < brightnessValue && brightnessValue < 255){
+                    SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
+                    BufferedImage image = SinglePointProcessing.getINSTANCE().changeBrightness(brightnessValue);
+                    rightPanel.copy(image);
+                    int with = rightPanel.canvas.getWidth();
+                    int height = rightPanel.canvas.getHeight();
+                    if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
+                        matchTheContent();}
+                } else JOptionPane.showMessageDialog(null,"Enter a value between -255 and 255");
+            }catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Invalid value");
+            }
         }
     }
 
