@@ -84,7 +84,25 @@ public class SinglePointProcessing {
         return canvas;
     }
     public BufferedImage changeBrightnessRange(){
-        //TODO
+        Color color;
+        int r,g,b;
+        int maxRed = findMax(GreyScaleType.Red);
+        int maxGreen = findMax(GreyScaleType.Green);
+        int maxBlue = findMax(GreyScaleType.Blue);
+        int minRed = findMin(GreyScaleType.Red);
+        int minGreen = findMin(GreyScaleType.Green);
+        int minBlue = findMin(GreyScaleType.Blue);
+        for (int w = 0; w < originalImage.getWidth(); w++) {
+            for (int h = 0; h < originalImage.getHeight(); h++) {
+                color = new Color(originalImage.getRGB(w,h));
+                r = 255*(color.getRed()-minRed)/(maxRed-minRed);
+                g = 255*(color.getGreen()-minGreen)/(maxGreen-minGreen);
+                b = 255*(color.getBlue()-minBlue)/(maxBlue-minBlue);
+                canvas.setRGB(
+                        w,h, new Color(r,g,b).getRGB()
+                );
+            }
+        }
         return canvas;
     }
     public BufferedImage negation(){
@@ -108,5 +126,35 @@ public class SinglePointProcessing {
         if (value > 255){
             return 255;
         }else return Math.max(value, 0);
+    }
+    private int findMax(GreyScaleType type){
+        Color color;
+        int value = 0;
+        for (int w = 0; w < originalImage.getWidth(); w++) {
+            for (int h = 0; h < originalImage.getHeight(); h++) {
+                color = new Color(originalImage.getRGB(w, h));
+                switch (type){
+                    case Red -> value = Math.max(value,color.getRed());
+                    case Green -> value = Math.max(value,color.getGreen());
+                    case Blue -> value = Math.max(value,color.getBlue());
+                }
+            }
+        }
+        return value;
+    }
+    private int findMin(GreyScaleType type){
+        Color color;
+        int value = 0;
+        for (int w = 0; w < originalImage.getWidth(); w++) {
+            for (int h = 0; h < originalImage.getHeight(); h++) {
+                color = new Color(originalImage.getRGB(w, h));
+                switch (type){
+                    case Red -> value = Math.min(value,color.getRed());
+                    case Green -> value = Math.min(value,color.getGreen());
+                    case Blue -> value = Math.min(value,color.getBlue());
+                }
+            }
+        }
+        return value;
     }
 }
