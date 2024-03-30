@@ -12,7 +12,6 @@ public abstract class Filtration {
     private int[][] originalColorValueRed;
     private int[][] originalColorValueGreen;
     private int[][] originalColorValueBlue;
-    protected final int normalization;
 
     protected Filtration(BufferedImage originalImage, GraphicalFilterInterface graphicalFilterInterface){
         this.originalImage = originalImage;
@@ -22,43 +21,50 @@ public abstract class Filtration {
         originalColorValueRed = new int[graphicalFilterInterface.getSize()][graphicalFilterInterface.getSize()];
         originalColorValueGreen = new int[graphicalFilterInterface.getSize()][graphicalFilterInterface.getSize()];
         originalColorValueBlue = new int[graphicalFilterInterface.getSize()][graphicalFilterInterface.getSize()];
-        normalization = calculateNormalization();
     }
 
     protected BufferedImage filterImage(){
         Color color;
         int r, g, b;
-        for (int w = graphicalFilterInterface.getSize()/2; w < originalImage.getWidth(); w++){
-            for (int h = graphicalFilterInterface.getSize()/2; h < originalImage.getHeight(); h++){
-                for(int i = 0; i < graphicalFilterInterface.getSize(); i++){
-                    for (int j = 0; j < graphicalFilterInterface.getSize(); j++){
-                        color = new Color(originalImage.getRGB(w-(graphicalFilterInterface.getSize()/2)+i,h-(graphicalFilterInterface.getSize()/2)+j));
-                        originalColorValueRed[i][j] = color.getRed();
-                        originalColorValueGreen[i][j] = color.getGreen();
-                        originalColorValueBlue[i][j] = color.getBlue();
+        for (int w = 0; w < originalImage.getWidth(); w++){
+            for (int h = 0; h < originalImage.getHeight(); h++){
+                if (!isBoundaryPixel(w,h)) {
+                    for (int i = 0; i < graphicalFilterInterface.getSize(); i++) {
+                        for (int j = 0; j < graphicalFilterInterface.getSize(); j++) {
+                            color = new Color(originalImage.getRGB(w - (graphicalFilterInterface.getSize() / 2) + i, h - (graphicalFilterInterface.getSize() / 2) + j));
+                            originalColorValueRed[i][j] = color.getRed();
+                            originalColorValueGreen[i][j] = color.getGreen();
+                            originalColorValueBlue[i][j] = color.getBlue();
+                        }
                     }
+                    r = filterValue(originalColorValueRed);
+                    g = filterValue(originalColorValueGreen);
+                    b = filterValue(originalColorValueBlue);
+                }else {
+                    color = new Color(originalImage.getRGB(w,h));
+                    r = color.getRed();
+                    g = color.getBlue();
+                    b = color.getBlue();
                 }
-                r = filterValue(originalColorValueRed);
-                g = filterValue(originalColorValueGreen);
-                b = filterValue(originalColorValueBlue);
-
                 canvas.setRGB(
-                        w, h, new Color(r, g, b).getRGB()
+                        w, h, new Color(trim(r), trim(g), trim(b)).getRGB()
                 );
             }
         }
         return canvas;
     }
     protected abstract int filterValue(int[][] originalColorValue);
-
-    private int calculateNormalization(){
-        int normalization = 0;
-        for (int w = 0; w< graphicalFilterInterface.getSize(); w++){
-            for (int h = 0; h< graphicalFilterInterface.getSize(); h++){
-                normalization += graphicalFilterInterface.getValue(w,h);
-            }
-        }
-        return normalization;
+    private int trim(int value){
+        if (value > 255){
+            return 255;
+        }else return Math.max(value, 0);
+    }
+    private boolean isBoundaryPixel(int w,int h){
+        if (w < graphicalFilterInterface.getSize()/2) return true;
+        if (h < graphicalFilterInterface.getSize()/2) return true;
+        if (w > originalImage.getWidth() - graphicalFilterInterface.getSize()/2) return true;
+        if (h > originalImage.getHeight() - graphicalFilterInterface.getSize()/2) return true;
+        return false;
     }
 
 }

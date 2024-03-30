@@ -21,13 +21,16 @@ public class MedianFilter implements GraphicalFilterInterface {
         return filter[i][j];
     }
 
-    public int findMedian(int[][] filter) {
+    public void setFilter(int[][] filter) {
         this.filter = filter;
+    }
+
+    public int getMedian() {
         int index = 0;
-        int[] tmp = new int[filter.length*filter[0].length];
+        int[] tmp = new int[size*size];
         for (int i = 0; i < filter.length;i++){
             for (int j = 0; j < filter.length;j++){
-                tmp[index++] = filter[i][j];
+                tmp[index++] = getValue(i,j);
             }
         }
         Arrays.sort(tmp);

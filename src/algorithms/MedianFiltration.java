@@ -12,6 +12,7 @@ public class MedianFiltration extends Filtration{
 
     @Override
     protected int filterValue(int[][] originalColorValue) {
-        return ((MedianFilter)graphicalFilterInterface).findMedian(originalColorValue);
+        ((MedianFilter)graphicalFilterInterface).setFilter(originalColorValue);
+        return ((MedianFilter)graphicalFilterInterface).getMedian();
     }
 }

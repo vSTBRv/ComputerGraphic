@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class MaskFromFile implements GraphicalFilterInterface {
     private final int size;
-    private int[][] filter;
+    private final int[][] filter;
     public MaskFromFile(String path) throws FileNotFoundException{
         File file = new File(path);
         int count = 0;
@@ -34,5 +34,4 @@ public class MaskFromFile implements GraphicalFilterInterface {
     public int getValue(int i, int j) {
         return filter[i][j];
     }
-
 }
