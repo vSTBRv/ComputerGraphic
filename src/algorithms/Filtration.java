@@ -23,7 +23,7 @@ public abstract class Filtration {
         originalColorValueBlue = new int[graphicalFilterInterface.getSize()][graphicalFilterInterface.getSize()];
     }
 
-    protected BufferedImage filterImage(){
+    public BufferedImage filterImage(){
         Color color;
         int r, g, b;
         for (int w = 0; w < originalImage.getWidth(); w++){

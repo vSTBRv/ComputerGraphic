@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class MedianFiltration extends Filtration{
 
-    protected MedianFiltration(BufferedImage originalImage, MedianFilter medianFilter) {
+    public MedianFiltration(BufferedImage originalImage, MedianFilter medianFilter) {
         super(originalImage, medianFilter);
     }
 

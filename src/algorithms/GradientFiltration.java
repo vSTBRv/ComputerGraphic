@@ -9,8 +9,10 @@ import java.awt.image.BufferedImage;
 public class GradientFiltration extends Filtration{
     private GradientType gradientType;
     private GradientCalculationType gradientCalculationType;
-    protected GradientFiltration(BufferedImage originalImage, GradientFilter gradientFilter) {
+    public GradientFiltration(BufferedImage originalImage, GradientFilter gradientFilter, GradientType gradientType, GradientCalculationType gradientCalculationType) {
         super(originalImage, gradientFilter);
+        this.gradientType = gradientType;
+        this.gradientCalculationType = gradientCalculationType;
     }
 
     @Override
@@ -19,14 +21,6 @@ public class GradientFiltration extends Filtration{
             case simple -> simpleGradientValue();
             case Roberts -> robertsGradientValue();
         };
-    }
-
-    public void setGradientType(GradientType gradientType) {
-        this.gradientType = gradientType;
-    }
-
-    public void setGradientCalculationType(GradientCalculationType gradientCalculationType) {
-        this.gradientCalculationType = gradientCalculationType;
     }
     private int simpleGradientValue(){
         return switch (gradientCalculationType) {

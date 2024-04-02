@@ -1,6 +1,14 @@
 package graphic;
 
+import algorithms.FiltrationFromFile;
+import algorithms.GradientFiltration;
+import algorithms.MedianFiltration;
 import algorithms.SinglePointProcessing;
+import entities.GradientFilter;
+import entities.MaskFromFile;
+import entities.MedianFilter;
+import enums.GradientCalculationType;
+import enums.GradientType;
 import enums.GreyScaleType;
 
 import javax.swing.*;
@@ -9,6 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 
 public class MainFrame extends JFrame implements ActionListener {
     private static final String TITLE ="Computer graphic";
@@ -47,6 +56,12 @@ public class MainFrame extends JFrame implements ActionListener {
         menu.changeContrast.addActionListener(this);
         menu.changeBrightnessRange.addActionListener(this);
         menu.negation.addActionListener(this);
+        menu.maskFromFile.addActionListener(this);
+        menu.medianFiltering.addActionListener(this);
+        menu.simpleGradientAbs.addActionListener(this);
+        menu.simpleGradientSqr.addActionListener(this);
+        menu.robertsGradientAbs.addActionListener(this);
+        menu.robertsGradientSqr.addActionListener(this);
     }
 
     private void matchTheContent() {
@@ -73,6 +88,62 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.CHANGE_CONTRAST_TEXT -> setContrast();
             case FrameMenu.CHANGE_BRIGHTNESS_RANGE_TEXT -> setBrightnessRange();
             case FrameMenu.NEGATION_TEXT -> negation();
+            case FrameMenu.MASK_FROM_FILE -> useMaskFromFile();
+            case FrameMenu.MEDIAN_FILTERING -> useMedianFilter();
+            case FrameMenu.SIMPLE_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut);
+            case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot);
+            case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut);
+            case FrameMenu.ROBERTS_GRADIENT_SQR -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot);
+        }
+    }
+
+    private void useGradientFilter(GradientType gradientType, GradientCalculationType gradientCalculationType) {
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas,new GradientFilter(),gradientType,gradientCalculationType);
+        rightPanel.copy(gradientFiltration.filterImage());
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+            matchTheContent();
+    }
+
+    private void useMedianFilter() {
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        String value = JOptionPane.showInputDialog("Enter median filter size");
+        if(value!=null){
+            try {
+                int size = Integer.parseInt(value);
+                if(size > 0){
+                    MedianFiltration medianFiltration = new MedianFiltration(leftPanel.canvas,new MedianFilter(size));
+                    rightPanel.copy(medianFiltration.filterImage());
+                }else {
+                    JOptionPane.showMessageDialog(null,"size must by above 0");
+                }
+                if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+                    matchTheContent();
+            }catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(null,"Invalid value");
+            }
+        }
+    }
+
+    private void useMaskFromFile() {
+        String path;
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "TXT file",
+                "txt"
+        );
+        fileChooser.setFileFilter(filter);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            path = fileChooser.getSelectedFile().getPath();
+            try {
+                FiltrationFromFile filtrationFromFile = new FiltrationFromFile(leftPanel.canvas, new MaskFromFile(path));
+                filtrationFromFile.filterImage();
+            } catch (FileNotFoundException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
