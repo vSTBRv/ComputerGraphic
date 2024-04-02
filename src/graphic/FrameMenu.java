@@ -20,6 +20,14 @@ public class FrameMenu extends JMenuBar {
     public static final String CHANGE_CONTRAST_TEXT = "Change contrast";
     public static final String NEGATION_TEXT = "Negation";
     public static final String CHANGE_BRIGHTNESS_RANGE_TEXT = "Change brightness range";
+    public static final String FILTERING = "Filtering";
+    public static final String MEDIAN_FILTERING = "Median filter";
+    public static final String MASK_FROM_FILE = "Mask from file";
+    public static final String GRADIENT_FILTER = "Gradient filter";
+    public static final String SIMPLE_GRADIENT_ABSOLUT = "Simple gradient (abs)";
+    public static final String ROBERTS_GRADIENT_ABSOLUT = "Robert's gradient (abs)";
+    public static final String SIMPLE_GRADIENT_SQR = "Simple gradient (sqr)";
+    public static final String ROBERTS_GRADIENT_SQR = "Robert's gradient (sqr)";
 
     JMenu file = new JMenu(FrameMenu.FILE_TEXT);
     JMenuItem openFile = new JMenuItem(FrameMenu.OPEN_FILE_TEXT);
@@ -38,6 +46,14 @@ public class FrameMenu extends JMenuBar {
     JMenuItem changeContrast = new JMenuItem(FrameMenu.CHANGE_CONTRAST_TEXT);
     JMenuItem negation = new JMenuItem(FrameMenu.NEGATION_TEXT);
     JMenuItem changeBrightnessRange = new JMenuItem(FrameMenu.CHANGE_BRIGHTNESS_RANGE_TEXT);
+    JMenu filtering = new JMenu(FrameMenu.FILTERING);
+    JMenu gradientFiltering = new JMenu(FrameMenu.GRADIENT_FILTER);
+    JMenuItem simpleGradientAbs = new JMenuItem(FrameMenu.SIMPLE_GRADIENT_ABSOLUT);
+    JMenuItem robertsGradientAbs = new JMenuItem(FrameMenu.ROBERTS_GRADIENT_ABSOLUT);
+    JMenuItem simpleGradientSqr = new JMenuItem(FrameMenu.SIMPLE_GRADIENT_SQR);
+    JMenuItem robertsGradientSqr = new JMenuItem(FrameMenu.ROBERTS_GRADIENT_SQR);
+    JMenuItem medianFiltering = new JMenuItem(FrameMenu.MEDIAN_FILTERING);
+    JMenuItem maskFromFile = new JMenuItem(FrameMenu.MASK_FROM_FILE);
 
     public FrameMenu(){
         file.add(openFile);
@@ -60,5 +76,14 @@ public class FrameMenu extends JMenuBar {
         singlePointProcessing.add(negation);
         singlePointProcessing.add(changeBrightnessRange);
         this.add(singlePointProcessing);
+
+        filtering.add(maskFromFile);
+        filtering.add(medianFiltering);
+        gradientFiltering.add(simpleGradientAbs);
+        gradientFiltering.add(simpleGradientSqr);
+        gradientFiltering.add(robertsGradientAbs);
+        gradientFiltering.add(robertsGradientSqr);
+        filtering.add(gradientFiltering);
+        this.add(filtering);
     }
 }
