@@ -60,10 +60,10 @@ public abstract class Filtration {
         }else return Math.max(value, 0);
     }
     private boolean isBoundaryPixel(int w,int h){
-        if (w < graphicalFilterInterface.getSize()/2) return true;
+        if (w < (graphicalFilterInterface.getSize()/2)) return true;
         if (h < graphicalFilterInterface.getSize()/2) return true;
-        if (w > originalImage.getWidth() - graphicalFilterInterface.getSize()/2) return true;
-        if (h > originalImage.getHeight() - graphicalFilterInterface.getSize()/2) return true;
+        if (w >= originalImage.getWidth() - graphicalFilterInterface.getSize()/2) return true;
+        if (h >= originalImage.getHeight() - graphicalFilterInterface.getSize()/2) return true;
         return false;
     }
 

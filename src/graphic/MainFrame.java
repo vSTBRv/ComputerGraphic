@@ -128,6 +128,8 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void useMaskFromFile() {
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
         String path;
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -140,7 +142,9 @@ public class MainFrame extends JFrame implements ActionListener {
             path = fileChooser.getSelectedFile().getPath();
             try {
                 FiltrationFromFile filtrationFromFile = new FiltrationFromFile(leftPanel.canvas, new MaskFromFile(path));
-                filtrationFromFile.filterImage();
+                rightPanel.copy(filtrationFromFile.filterImage());
+                if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+                    matchTheContent();
             } catch (FileNotFoundException e){
                 System.out.println(e.getMessage());
             }
