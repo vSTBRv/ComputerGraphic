@@ -11,11 +11,11 @@ public class FrameMenu extends JMenuBar {
     public static final String CLEAR_LEFT_TEXT = "Clear left panel";
     public static final String CLEAR_RIGHT_TEXT = "Clear right panel";
     public static final String SINGLE_POINT_PROCESSING_TEXT = "Single point processing";
-    public static final String TO_GREY_AVG_TEXT = "To grey(avg.) scale";
-    public static final String TO_GREY_RED_TEXT = "To grey(RED) scale";
-    public static final String TO_GREY_GREEN_TEXT = "To grey(GREEN.) scale";
-    public static final String TO_GREY_BLUE_TEXT = "To grey(BLUE) scale";
-    public static final String TO_GREY_YUV_TEXT = "To grey(YUV) scale";
+    public static final String TO_GREY_AVG_TEXT = "by average scale";
+    public static final String TO_GREY_RED_TEXT = "by red scale";
+    public static final String TO_GREY_GREEN_TEXT = "by green scale";
+    public static final String TO_GREY_BLUE_TEXT = "by blue scale";
+    public static final String TO_GREY_YUV_TEXT = "by YUV scale";
     public static final String CHANGE_BRIGHTNESS_TEXT = "Change brightness";
     public static final String CHANGE_CONTRAST_TEXT = "Change contrast";
     public static final String NEGATION_TEXT = "Negation";
@@ -28,6 +28,7 @@ public class FrameMenu extends JMenuBar {
     public static final String ROBERTS_GRADIENT_ABSOLUT = "Robert's gradient (abs)";
     public static final String SIMPLE_GRADIENT_SQR = "Simple gradient (sqr)";
     public static final String ROBERTS_GRADIENT_SQR = "Robert's gradient (sqr)";
+    public static final String TO_GREY_SCALE = "To grey scale";
 
     JMenu file = new JMenu(FrameMenu.FILE_TEXT);
     JMenuItem openFile = new JMenuItem(FrameMenu.OPEN_FILE_TEXT);
@@ -54,6 +55,7 @@ public class FrameMenu extends JMenuBar {
     JMenuItem robertsGradientSqr = new JMenuItem(FrameMenu.ROBERTS_GRADIENT_SQR);
     JMenuItem medianFiltering = new JMenuItem(FrameMenu.MEDIAN_FILTERING);
     JMenuItem maskFromFile = new JMenuItem(FrameMenu.MASK_FROM_FILE);
+    JMenu toGreyScale = new JMenu(FrameMenu.TO_GREY_SCALE);
 
     public FrameMenu(){
         file.add(openFile);
@@ -66,11 +68,13 @@ public class FrameMenu extends JMenuBar {
         file.add(closeFile);
         this.add(file);
 
-        singlePointProcessing.add(toGreyAvgScale);
-        singlePointProcessing.add(toGreyRedScale);
-        singlePointProcessing.add(toGreyGreenScale);
-        singlePointProcessing.add(toGreyBlueScale);
-        singlePointProcessing.add(toGreyYUVScale);
+
+        toGreyScale.add(toGreyAvgScale);
+        toGreyScale.add(toGreyRedScale);
+        toGreyScale.add(toGreyGreenScale);
+        toGreyScale.add(toGreyBlueScale);
+        toGreyScale.add(toGreyYUVScale);
+        singlePointProcessing.add(toGreyScale);
         singlePointProcessing.add(changeBrightness);
         singlePointProcessing.add(changeContrast);
         singlePointProcessing.add(negation);

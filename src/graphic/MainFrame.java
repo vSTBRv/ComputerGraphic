@@ -173,14 +173,16 @@ public class MainFrame extends JFrame implements ActionListener {
     private void negation(){
         SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
         BufferedImage image = SinglePointProcessing.getINSTANCE().negation();
-        rightPanel.copy(image);
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
+        rightPanel.copy(image);
         if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
             matchTheContent();}
     }
     private void setContrast() {
         String value =  JOptionPane.showInputDialog("Enter a positive value");
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
         if (value != null) {
             try {
                 double contrastValue = Double.parseDouble(value);
@@ -188,8 +190,6 @@ public class MainFrame extends JFrame implements ActionListener {
                     SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
                     BufferedImage image = SinglePointProcessing.getINSTANCE().changeContrast(contrastValue);
                     rightPanel.copy(image);
-                    int with = rightPanel.canvas.getWidth();
-                    int height = rightPanel.canvas.getHeight();
                     if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()) {
                         matchTheContent();
                     }
@@ -201,6 +201,8 @@ public class MainFrame extends JFrame implements ActionListener {
     }
     private void setBrightness() {
         String value = JOptionPane.showInputDialog("Enter value");
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
         if(value != null){
             try{
                 int brightnessValue = Integer.parseInt(value);
@@ -208,8 +210,6 @@ public class MainFrame extends JFrame implements ActionListener {
                     SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
                     BufferedImage image = SinglePointProcessing.getINSTANCE().changeBrightness(brightnessValue);
                     rightPanel.copy(image);
-                    int with = rightPanel.canvas.getWidth();
-                    int height = rightPanel.canvas.getHeight();
                     if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
                         matchTheContent();}
                 } else JOptionPane.showMessageDialog(null,"Enter a value between -255 and 255");
