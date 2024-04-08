@@ -17,6 +17,7 @@ public class GradientFiltration extends Filtration{
 
     @Override
     protected int filterValue(int[][] originalColorValue) {
+        ((GradientFilter) graphicalFilterInterface).setFilter(originalColorValue);
         return switch (gradientType) {
             case simple -> simpleGradientValue();
             case Roberts -> robertsGradientValue();
