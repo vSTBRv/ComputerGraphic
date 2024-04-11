@@ -2,6 +2,7 @@ package algorithms;
 
 import entities.GradientFilter;
 import enums.GradientCalculationType;
+import enums.GradientFiltrationOptions;
 import enums.GradientType;
 
 import java.awt.image.BufferedImage;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 public class GradientFiltration extends Filtration{
     private GradientType gradientType;
     private GradientCalculationType gradientCalculationType;
+    private GradientFiltrationOptions gradientFiltrationOptions;
     public GradientFiltration(BufferedImage originalImage, GradientFilter gradientFilter, GradientType gradientType, GradientCalculationType gradientCalculationType) {
         super(originalImage, gradientFilter);
         this.gradientType = gradientType;
@@ -17,11 +19,20 @@ public class GradientFiltration extends Filtration{
 
     @Override
     protected int filterValue(int[][] originalColorValue) {
+        int value = 0;
         ((GradientFilter) graphicalFilterInterface).setFilter(originalColorValue);
-        return switch (gradientType) {
-            case simple -> simpleGradientValue();
-            case Roberts -> robertsGradientValue();
-        };
+        switch (gradientType) {
+            case simple -> value = simpleGradientValue();
+            case Roberts -> value = robertsGradientValue();
+        }
+        if (((GradientFilter) graphicalFilterInterface).getThreshold() > -1){
+           return switch (gradientFiltrationOptions) {
+               case White_background -> value < ((GradientFilter) graphicalFilterInterface).getThreshold() ? 255 : value;
+               case Black_edges -> value > ((GradientFilter) graphicalFilterInterface).getThreshold() ? 0 : value;
+               case Black_edges_white_background -> value < ((GradientFilter) graphicalFilterInterface).getThreshold() ? 255 : 0;
+           };
+        }
+        return value;
     }
     private int simpleGradientValue(){
         return switch (gradientCalculationType) {
@@ -54,5 +65,9 @@ public class GradientFiltration extends Filtration{
                     )
             );
         };
+    }
+
+    public void setGradientFiltrationOptions(GradientFiltrationOptions gradientFiltrationOptions) {
+        this.gradientFiltrationOptions = gradientFiltrationOptions;
     }
 }

@@ -109,22 +109,10 @@ public class MainFrame extends JFrame implements ActionListener {
     private void useMedianFilter() {
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
-        String value = JOptionPane.showInputDialog("Enter median filter size");
-        if(value!=null){
-            try {
-                int size = Integer.parseInt(value);
-                if(size > 0){
-                    MedianFiltration medianFiltration = new MedianFiltration(leftPanel.canvas,new MedianFilter(size));
-                    rightPanel.copy(medianFiltration.filterImage());
-                }else {
-                    JOptionPane.showMessageDialog(null,"size must by above 0");
-                }
-                if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
-                    matchTheContent();
-            }catch (NumberFormatException e){
-                JOptionPane.showMessageDialog(null,"Invalid value");
-            }
-        }
+        MedianFiltration medianFiltration = new MedianFiltration(leftPanel.canvas, new MedianFilter(3));
+        rightPanel.copy(medianFiltration.filterImage());
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+            matchTheContent();
     }
 
     private void useMaskFromFile() {
