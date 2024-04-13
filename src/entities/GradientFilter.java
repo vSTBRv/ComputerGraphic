@@ -19,6 +19,7 @@ public class GradientFilter implements GraphicalFilterInterface {
         return size;
     }
 
+    //return original pixel values on selected position
     @Override
     public int getValue(int i, int j) {
         return filter[i][j];

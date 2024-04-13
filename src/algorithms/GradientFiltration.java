@@ -8,8 +8,8 @@ import enums.GradientType;
 import java.awt.image.BufferedImage;
 
 public class GradientFiltration extends Filtration{
-    private GradientType gradientType;
-    private GradientCalculationType gradientCalculationType;
+    private final GradientType gradientType;
+    private final GradientCalculationType gradientCalculationType;
     private GradientFiltrationOptions gradientFiltrationOptions;
     public GradientFiltration(BufferedImage originalImage, GradientFilter gradientFilter, GradientType gradientType, GradientCalculationType gradientCalculationType) {
         super(originalImage, gradientFilter);
@@ -27,8 +27,8 @@ public class GradientFiltration extends Filtration{
         }
         if (((GradientFilter) graphicalFilterInterface).getThreshold() > -1){
            return switch (gradientFiltrationOptions) {
-               case White_background -> value < ((GradientFilter) graphicalFilterInterface).getThreshold() ? 255 : value;
-               case Black_edges -> value > ((GradientFilter) graphicalFilterInterface).getThreshold() ? 0 : value;
+               case White_background -> value < ((GradientFilter) graphicalFilterInterface).getThreshold() ? 255 : graphicalFilterInterface.getValue(0,0);
+               case Black_edges -> value > ((GradientFilter) graphicalFilterInterface).getThreshold() ? 0 : graphicalFilterInterface.getValue(0,0);
                case Black_edges_white_background -> value < ((GradientFilter) graphicalFilterInterface).getThreshold() ? 255 : 0;
            };
         }
