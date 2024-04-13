@@ -2,14 +2,15 @@ package graphic;
 
 import algorithms.FiltrationFromFile;
 import algorithms.GradientFiltration;
-import algorithms.MedianFiltration;
+import algorithms.StatisticFiltration;
 import algorithms.SinglePointProcessing;
 import entities.GradientFilter;
 import entities.MaskFromFile;
-import entities.MedianFilter;
+import entities.StatisticFilter;
 import enums.GradientCalculationType;
 import enums.GradientType;
 import enums.GreyScaleType;
+import enums.StatisticFilterOption;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -98,18 +99,31 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     private void useGradientFilter(GradientType gradientType, GradientCalculationType gradientCalculationType) {
+        String value = JOptionPane.showInputDialog("Enter threshold value");
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
-        GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas,new GradientFilter(),gradientType,gradientCalculationType);
-        rightPanel.copy(gradientFiltration.filterImage());
-        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
-            matchTheContent();
+        if (value != null) {
+            GradientFilter gradientFilter = new GradientFilter();
+            try {
+                int threshold = Integer.parseInt(value);
+                if (threshold > -1) {
+                    //TODO graphical interface to select option
+                }
+                gradientFilter.setThreshold(threshold);
+                GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType);
+                rightPanel.copy(gradientFiltration.filterImage());
+                if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+                    matchTheContent();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Threshold value must be an integer");
+            }
+        }
     }
 
     private void useMedianFilter() {
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
-        MedianFiltration medianFiltration = new MedianFiltration(leftPanel.canvas, new MedianFilter(3));
+        StatisticFiltration medianFiltration = new StatisticFiltration(leftPanel.canvas, new StatisticFilter(3), StatisticFilterOption.Median);
         rightPanel.copy(medianFiltration.filterImage());
         if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
             matchTheContent();
