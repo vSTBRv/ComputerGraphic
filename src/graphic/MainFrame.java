@@ -55,7 +55,9 @@ public class MainFrame extends JFrame implements ActionListener {
         menu.changeBrightnessRange.addActionListener(this);
         menu.negation.addActionListener(this);
         menu.maskFromFile.addActionListener(this);
+        menu.minValueFilter.addActionListener(this);
         menu.medianFiltering.addActionListener(this);
+        menu.maxValueFilter.addActionListener(this);
         menu.simpleGradientAbs.addActionListener(this);
         menu.simpleGradientSqr.addActionListener(this);
         menu.robertsGradientAbs.addActionListener(this);
@@ -90,7 +92,9 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.CHANGE_BRIGHTNESS_RANGE_TEXT -> setBrightnessRange();
             case FrameMenu.NEGATION_TEXT -> negation();
             case FrameMenu.MASK_FROM_FILE -> useMaskFromFile();
-            case FrameMenu.MEDIAN_FILTERING -> useMedianFilter();
+            case FrameMenu.MIN_VALUE_FILTER -> useStatisticFilter(StatisticFilterOption.Minimum);
+            case FrameMenu.MEDIAN_FILTER -> useStatisticFilter(StatisticFilterOption.Median);
+            case FrameMenu.MAX_VALUE_FILTER -> useStatisticFilter(StatisticFilterOption.Maximum);
             case FrameMenu.SIMPLE_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut,null);
             case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot,null);
             case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut,null);
@@ -124,11 +128,11 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void useMedianFilter() {
+    private void useStatisticFilter(StatisticFilterOption statisticFilterOption) {
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
-        StatisticFiltration medianFiltration = new StatisticFiltration(leftPanel.canvas, new StatisticFilter(3), StatisticFilterOption.Median);
-        rightPanel.copy(medianFiltration.filterImage());
+        StatisticFiltration statisticFiltration = new StatisticFiltration(leftPanel.canvas, new StatisticFilter(3), statisticFilterOption);
+        rightPanel.copy(statisticFiltration.filterImage());
         if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
             matchTheContent();
     }

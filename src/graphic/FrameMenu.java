@@ -21,7 +21,10 @@ public class FrameMenu extends JMenuBar {
     public static final String NEGATION_TEXT = "Negation";
     public static final String CHANGE_BRIGHTNESS_RANGE_TEXT = "Change brightness range";
     public static final String FILTERING = "Filtering";
-    public static final String MEDIAN_FILTERING = "Median filter";
+    public static final String STATISTICAL_FILTER = "Statistical filter";
+    public static final String MAX_VALUE_FILTER = "Max value filter";
+    public static final String MIN_VALUE_FILTER = "Min value filter";
+    public static final String MEDIAN_FILTER = "Median filter";
     public static final String MASK_FROM_FILE = "Mask from file";
     public static final String GRADIENT_FILTER = "Gradient filter";
     public static final String SIMPLE_GRADIENT_ABSOLUT = "Simple gradient (abs)";
@@ -41,6 +44,7 @@ public class FrameMenu extends JMenuBar {
     JMenuItem copy = new JMenuItem(FrameMenu.COPY_TEXT);
     JMenuItem clearRight = new JMenuItem(FrameMenu.CLEAR_RIGHT_TEXT);
     JMenu singlePointProcessing = new JMenu(FrameMenu.SINGLE_POINT_PROCESSING_TEXT);
+    JMenu toGreyScale = new JMenu(FrameMenu.TO_GREY_SCALE);
     JMenuItem toGreyAvgScale = new JMenuItem(FrameMenu.TO_GREY_AVG_TEXT);
     JMenuItem toGreyRedScale = new JMenuItem(FrameMenu.TO_GREY_RED_TEXT);
     JMenuItem toGreyGreenScale = new JMenuItem(FrameMenu.TO_GREY_GREEN_TEXT);
@@ -51,14 +55,16 @@ public class FrameMenu extends JMenuBar {
     JMenuItem negation = new JMenuItem(FrameMenu.NEGATION_TEXT);
     JMenuItem changeBrightnessRange = new JMenuItem(FrameMenu.CHANGE_BRIGHTNESS_RANGE_TEXT);
     JMenu filtering = new JMenu(FrameMenu.FILTERING);
+    JMenuItem maskFromFile = new JMenuItem(FrameMenu.MASK_FROM_FILE);
+    JMenu statisticFilter = new JMenu(FrameMenu.STATISTICAL_FILTER);
+    JMenuItem minValueFilter = new JMenuItem(FrameMenu.MIN_VALUE_FILTER);
+    JMenuItem medianFiltering = new JMenuItem(FrameMenu.MEDIAN_FILTER);
+    JMenuItem maxValueFilter = new JMenuItem(FrameMenu.MAX_VALUE_FILTER);
     JMenu gradientFiltering = new JMenu(FrameMenu.GRADIENT_FILTER);
     JMenuItem simpleGradientAbs = new JMenuItem(FrameMenu.SIMPLE_GRADIENT_ABSOLUT);
     JMenuItem robertsGradientAbs = new JMenuItem(FrameMenu.ROBERTS_GRADIENT_ABSOLUT);
     JMenuItem simpleGradientSqr = new JMenuItem(FrameMenu.SIMPLE_GRADIENT_SQR);
     JMenuItem robertsGradientSqr = new JMenuItem(FrameMenu.ROBERTS_GRADIENT_SQR);
-    JMenuItem medianFiltering = new JMenuItem(FrameMenu.MEDIAN_FILTERING);
-    JMenuItem maskFromFile = new JMenuItem(FrameMenu.MASK_FROM_FILE);
-    JMenu toGreyScale = new JMenu(FrameMenu.TO_GREY_SCALE);
     JMenuItem whiteBackground = new JMenuItem(FrameMenu.WHITE_BACKGROUND);
     JMenuItem blackEdge = new JMenuItem(FrameMenu.BLACK_EDGES);
     JMenuItem blackEdgesWithWhiteBackground = new JMenuItem(FrameMenu.BLACK_EDGES_WHITE_BACKGROUND);
@@ -88,7 +94,10 @@ public class FrameMenu extends JMenuBar {
         this.add(singlePointProcessing);
 
         filtering.add(maskFromFile);
-        filtering.add(medianFiltering);
+        statisticFilter.add(minValueFilter);
+        statisticFilter.add(medianFiltering);
+        statisticFilter.add(maxValueFilter);
+        filtering.add(statisticFilter);
         gradientFiltering.add(simpleGradientAbs);
         gradientFiltering.add(simpleGradientSqr);
         gradientFiltering.add(robertsGradientAbs);
