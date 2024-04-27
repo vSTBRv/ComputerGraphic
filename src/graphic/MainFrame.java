@@ -7,10 +7,7 @@ import algorithms.SinglePointProcessing;
 import entities.GradientFilter;
 import entities.MaskFromFile;
 import entities.StatisticFilter;
-import enums.GradientCalculationType;
-import enums.GradientType;
-import enums.GreyScaleType;
-import enums.StatisticFilterOption;
+import enums.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -91,32 +88,33 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.NEGATION_TEXT -> negation();
             case FrameMenu.MASK_FROM_FILE -> useMaskFromFile();
             case FrameMenu.MEDIAN_FILTERING -> useMedianFilter();
-            case FrameMenu.SIMPLE_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut);
-            case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot);
-            case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut);
-            case FrameMenu.ROBERTS_GRADIENT_SQR -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot);
+            case FrameMenu.SIMPLE_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut,null);
+            case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot,null);
+            case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut,null);
+            case FrameMenu.ROBERTS_GRADIENT_SQR -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,null);
         }
     }
 
-    private void useGradientFilter(GradientType gradientType, GradientCalculationType gradientCalculationType) {
-        String value = JOptionPane.showInputDialog("Enter threshold value");
+    private void useGradientFilter(GradientType gradientType, GradientCalculationType gradientCalculationType, GradientFiltrationOptions gradientFiltrationOptions) {
+        GradientFilter gradientFilter = new GradientFilter();
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
-        if (value != null) {
-            GradientFilter gradientFilter = new GradientFilter();
-            try {
-                int threshold = Integer.parseInt(value);
-                if (threshold > -1) {
-                    //TODO graphical interface to select option
+        if(gradientFiltrationOptions != null){
+            String value = JOptionPane.showInputDialog("Enter threshold value");
+            if (value != null) {
+                try {
+                    int threshold = Integer.parseInt(value);
+                    gradientFilter.setThreshold(threshold);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Threshold value must be an integer");
                 }
-                gradientFilter.setThreshold(threshold);
-                GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType);
-                rightPanel.copy(gradientFiltration.filterImage());
-                if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
-                    matchTheContent();
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Threshold value must be an integer");
             }
+        }
+        GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType);
+        gradientFiltration.setGradientFiltrationOptions(gradientFiltrationOptions);
+        rightPanel.copy(gradientFiltration.filterImage());
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()) {
+            matchTheContent();
         }
     }
 
