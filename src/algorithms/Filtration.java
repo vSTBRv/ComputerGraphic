@@ -6,12 +6,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class Filtration {
-    private BufferedImage canvas;
-    private final BufferedImage originalImage;
+    protected BufferedImage canvas;
+    protected final BufferedImage originalImage;
     protected GraphicalFilterInterface graphicalFilterInterface;
-    private int[][] originalColorValueRed;
-    private int[][] originalColorValueGreen;
-    private int[][] originalColorValueBlue;
+    protected int[][] originalColorValueRed;
+    protected int[][] originalColorValueGreen;
+    protected int[][] originalColorValueBlue;
 
     protected Filtration(BufferedImage originalImage, GraphicalFilterInterface graphicalFilterInterface){
         this.originalImage = originalImage;
@@ -43,7 +43,7 @@ public abstract class Filtration {
                 }else {
                     color = new Color(originalImage.getRGB(w,h));
                     r = color.getRed();
-                    g = color.getBlue();
+                    g = color.getGreen();
                     b = color.getBlue();
                 }
                 canvas.setRGB(
@@ -59,7 +59,7 @@ public abstract class Filtration {
             return 255;
         }else return Math.max(value, 0);
     }
-    private boolean isBoundaryPixel(int w,int h){
+    protected boolean isBoundaryPixel(int w,int h){
         if (w < (graphicalFilterInterface.getSize()/2)) return true;
         if (h < graphicalFilterInterface.getSize()/2) return true;
         if (w >= originalImage.getWidth() - graphicalFilterInterface.getSize()/2) return true;

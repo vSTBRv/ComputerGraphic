@@ -1,9 +1,6 @@
 package graphic;
 
-import algorithms.FiltrationFromFile;
-import algorithms.GradientFiltration;
-import algorithms.StatisticFiltration;
-import algorithms.SinglePointProcessing;
+import algorithms.*;
 import entities.GradientFilter;
 import entities.MaskFromFile;
 import entities.StatisticFilter;
@@ -99,9 +96,9 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot,null);
             case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut,null);
             case FrameMenu.ROBERTS_GRADIENT_SQR -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,null);
-            case FrameMenu.WHITE_BACKGROUND -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,GradientFiltrationOptions.White_background);
-            case FrameMenu.BLACK_EDGES -> useGradientFilter(GradientType.Roberts,GradientCalculationType.sqrRoot,GradientFiltrationOptions.Black_edges);
-            case FrameMenu.BLACK_EDGES_WHITE_BACKGROUND -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,GradientFiltrationOptions.Black_edges_white_background);
+            case FrameMenu.WHITE_BACKGROUND -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut,GradientFiltrationOptions.White_background);
+            case FrameMenu.BLACK_EDGES -> useGradientFilter(GradientType.simple,GradientCalculationType.absolut,GradientFiltrationOptions.Black_edges);
+            case FrameMenu.BLACK_EDGES_WHITE_BACKGROUND -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut,GradientFiltrationOptions.Black_edges_white_background);
         }
     }
 
@@ -120,9 +117,13 @@ public class MainFrame extends JFrame implements ActionListener {
                 }
             }
         }
-        GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType);
-        gradientFiltration.setGradientFiltrationOptions(gradientFiltrationOptions);
-        rightPanel.copy(gradientFiltration.filterImage());
+        if(gradientFilter.getThreshold() > -1) {
+            GradientFiltrationWithThreshold gradientFiltrationWithThreshold = new GradientFiltrationWithThreshold(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType,gradientFiltrationOptions);
+            rightPanel.copy(gradientFiltrationWithThreshold.filterImage());
+        }else {
+            GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType);
+            rightPanel.copy(gradientFiltration.filterImage());
+        }
         if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()) {
             matchTheContent();
         }

@@ -17,9 +17,9 @@ public class FiltrationFromFile extends Filtration{
         for (int i = 0; i < graphicalFilterInterface.getSize(); i++){
             for (int j = 0; j < graphicalFilterInterface.getSize(); j++){
                 filteredValue += originalColorValue[i][j] * graphicalFilterInterface.getValue(i,j);
-                if (normalization != 0) filteredValue /= normalization;
             }
         }
+        if (normalization != 0) filteredValue /= normalization;
         return filteredValue;
     }
     private int calculateNormalization(){
