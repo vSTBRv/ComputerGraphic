@@ -29,6 +29,9 @@ public class FrameMenu extends JMenuBar {
     public static final String SIMPLE_GRADIENT_SQR = "Simple gradient (sqr)";
     public static final String ROBERTS_GRADIENT_SQR = "Robert's gradient (sqr)";
     public static final String TO_GREY_SCALE = "To grey scale";
+    public static final String WHITE_BACKGROUND = "White background";
+    public static final String BLACK_EDGES = "Black edges";
+    public static final String BLACK_EDGES_WHITE_BACKGROUND = "Black edges with white background";
 
     JMenu file = new JMenu(FrameMenu.FILE_TEXT);
     JMenuItem openFile = new JMenuItem(FrameMenu.OPEN_FILE_TEXT);
@@ -56,6 +59,9 @@ public class FrameMenu extends JMenuBar {
     JMenuItem medianFiltering = new JMenuItem(FrameMenu.MEDIAN_FILTERING);
     JMenuItem maskFromFile = new JMenuItem(FrameMenu.MASK_FROM_FILE);
     JMenu toGreyScale = new JMenu(FrameMenu.TO_GREY_SCALE);
+    JMenuItem whiteBackground = new JMenuItem(FrameMenu.WHITE_BACKGROUND);
+    JMenuItem blackEdge = new JMenuItem(FrameMenu.BLACK_EDGES);
+    JMenuItem blackEdgesWithWhiteBackground = new JMenuItem(FrameMenu.BLACK_EDGES_WHITE_BACKGROUND);
 
     public FrameMenu(){
         file.add(openFile);
@@ -88,6 +94,9 @@ public class FrameMenu extends JMenuBar {
         gradientFiltering.add(robertsGradientAbs);
         gradientFiltering.add(robertsGradientSqr);
         filtering.add(gradientFiltering);
+        filtering.add(whiteBackground);
+        filtering.add(blackEdge);
+        filtering.add(blackEdgesWithWhiteBackground);
         this.add(filtering);
     }
 }

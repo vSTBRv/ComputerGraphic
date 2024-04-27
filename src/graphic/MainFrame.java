@@ -60,6 +60,9 @@ public class MainFrame extends JFrame implements ActionListener {
         menu.simpleGradientSqr.addActionListener(this);
         menu.robertsGradientAbs.addActionListener(this);
         menu.robertsGradientSqr.addActionListener(this);
+        menu.whiteBackground.addActionListener(this);
+        menu.blackEdge.addActionListener(this);
+        menu.blackEdgesWithWhiteBackground.addActionListener(this);
     }
 
     private void matchTheContent() {
@@ -92,6 +95,9 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot,null);
             case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut,null);
             case FrameMenu.ROBERTS_GRADIENT_SQR -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,null);
+            case FrameMenu.WHITE_BACKGROUND -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,GradientFiltrationOptions.White_background);
+            case FrameMenu.BLACK_EDGES -> useGradientFilter(GradientType.Roberts,GradientCalculationType.sqrRoot,GradientFiltrationOptions.Black_edges);
+            case FrameMenu.BLACK_EDGES_WHITE_BACKGROUND -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,GradientFiltrationOptions.Black_edges_white_background);
         }
     }
 
