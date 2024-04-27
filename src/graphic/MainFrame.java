@@ -1,7 +1,13 @@
 package graphic;
 
+import algorithms.FiltrationFromFile;
+import algorithms.GradientFiltration;
+import algorithms.StatisticFiltration;
 import algorithms.SinglePointProcessing;
-import enums.GreyScaleType;
+import entities.GradientFilter;
+import entities.MaskFromFile;
+import entities.StatisticFilter;
+import enums.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -9,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 
 public class MainFrame extends JFrame implements ActionListener {
     private static final String TITLE ="Computer graphic";
@@ -47,6 +54,17 @@ public class MainFrame extends JFrame implements ActionListener {
         menu.changeContrast.addActionListener(this);
         menu.changeBrightnessRange.addActionListener(this);
         menu.negation.addActionListener(this);
+        menu.maskFromFile.addActionListener(this);
+        menu.minValueFilter.addActionListener(this);
+        menu.medianFiltering.addActionListener(this);
+        menu.maxValueFilter.addActionListener(this);
+        menu.simpleGradientAbs.addActionListener(this);
+        menu.simpleGradientSqr.addActionListener(this);
+        menu.robertsGradientAbs.addActionListener(this);
+        menu.robertsGradientSqr.addActionListener(this);
+        menu.whiteBackground.addActionListener(this);
+        menu.blackEdge.addActionListener(this);
+        menu.blackEdgesWithWhiteBackground.addActionListener(this);
     }
 
     private void matchTheContent() {
@@ -73,6 +91,73 @@ public class MainFrame extends JFrame implements ActionListener {
             case FrameMenu.CHANGE_CONTRAST_TEXT -> setContrast();
             case FrameMenu.CHANGE_BRIGHTNESS_RANGE_TEXT -> setBrightnessRange();
             case FrameMenu.NEGATION_TEXT -> negation();
+            case FrameMenu.MASK_FROM_FILE -> useMaskFromFile();
+            case FrameMenu.MIN_VALUE_FILTER -> useStatisticFilter(StatisticFilterOption.Minimum);
+            case FrameMenu.MEDIAN_FILTER -> useStatisticFilter(StatisticFilterOption.Median);
+            case FrameMenu.MAX_VALUE_FILTER -> useStatisticFilter(StatisticFilterOption.Maximum);
+            case FrameMenu.SIMPLE_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.simple, GradientCalculationType.absolut,null);
+            case FrameMenu.SIMPLE_GRADIENT_SQR -> useGradientFilter(GradientType.simple, GradientCalculationType.sqrRoot,null);
+            case FrameMenu.ROBERTS_GRADIENT_ABSOLUT -> useGradientFilter(GradientType.Roberts, GradientCalculationType.absolut,null);
+            case FrameMenu.ROBERTS_GRADIENT_SQR -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,null);
+            case FrameMenu.WHITE_BACKGROUND -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,GradientFiltrationOptions.White_background);
+            case FrameMenu.BLACK_EDGES -> useGradientFilter(GradientType.Roberts,GradientCalculationType.sqrRoot,GradientFiltrationOptions.Black_edges);
+            case FrameMenu.BLACK_EDGES_WHITE_BACKGROUND -> useGradientFilter(GradientType.Roberts, GradientCalculationType.sqrRoot,GradientFiltrationOptions.Black_edges_white_background);
+        }
+    }
+
+    private void useGradientFilter(GradientType gradientType, GradientCalculationType gradientCalculationType, GradientFiltrationOptions gradientFiltrationOptions) {
+        GradientFilter gradientFilter = new GradientFilter();
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        if(gradientFiltrationOptions != null){
+            String value = JOptionPane.showInputDialog("Enter threshold value");
+            if (value != null) {
+                try {
+                    int threshold = Integer.parseInt(value);
+                    gradientFilter.setThreshold(threshold);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Threshold value must be an integer");
+                }
+            }
+        }
+        GradientFiltration gradientFiltration = new GradientFiltration(leftPanel.canvas, gradientFilter, gradientType, gradientCalculationType);
+        gradientFiltration.setGradientFiltrationOptions(gradientFiltrationOptions);
+        rightPanel.copy(gradientFiltration.filterImage());
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()) {
+            matchTheContent();
+        }
+    }
+
+    private void useStatisticFilter(StatisticFilterOption statisticFilterOption) {
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        StatisticFiltration statisticFiltration = new StatisticFiltration(leftPanel.canvas, new StatisticFilter(3), statisticFilterOption);
+        rightPanel.copy(statisticFiltration.filterImage());
+        if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+            matchTheContent();
+    }
+
+    private void useMaskFromFile() {
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
+        String path;
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "TXT file",
+                "txt"
+        );
+        fileChooser.setFileFilter(filter);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            path = fileChooser.getSelectedFile().getPath();
+            try {
+                FiltrationFromFile filtrationFromFile = new FiltrationFromFile(leftPanel.canvas, new MaskFromFile(path));
+                rightPanel.copy(filtrationFromFile.filterImage());
+                if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight())
+                    matchTheContent();
+            } catch (FileNotFoundException e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -98,14 +183,16 @@ public class MainFrame extends JFrame implements ActionListener {
     private void negation(){
         SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
         BufferedImage image = SinglePointProcessing.getINSTANCE().negation();
-        rightPanel.copy(image);
         int with = rightPanel.canvas.getWidth();
         int height = rightPanel.canvas.getHeight();
+        rightPanel.copy(image);
         if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
             matchTheContent();}
     }
     private void setContrast() {
         String value =  JOptionPane.showInputDialog("Enter a positive value");
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
         if (value != null) {
             try {
                 double contrastValue = Double.parseDouble(value);
@@ -113,8 +200,6 @@ public class MainFrame extends JFrame implements ActionListener {
                     SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
                     BufferedImage image = SinglePointProcessing.getINSTANCE().changeContrast(contrastValue);
                     rightPanel.copy(image);
-                    int with = rightPanel.canvas.getWidth();
-                    int height = rightPanel.canvas.getHeight();
                     if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()) {
                         matchTheContent();
                     }
@@ -126,6 +211,8 @@ public class MainFrame extends JFrame implements ActionListener {
     }
     private void setBrightness() {
         String value = JOptionPane.showInputDialog("Enter value");
+        int with = rightPanel.canvas.getWidth();
+        int height = rightPanel.canvas.getHeight();
         if(value != null){
             try{
                 int brightnessValue = Integer.parseInt(value);
@@ -133,8 +220,6 @@ public class MainFrame extends JFrame implements ActionListener {
                     SinglePointProcessing.getINSTANCE().loadImage(leftPanel.canvas);
                     BufferedImage image = SinglePointProcessing.getINSTANCE().changeBrightness(brightnessValue);
                     rightPanel.copy(image);
-                    int with = rightPanel.canvas.getWidth();
-                    int height = rightPanel.canvas.getHeight();
                     if (with != rightPanel.canvas.getWidth() || height != rightPanel.canvas.getHeight()){
                         matchTheContent();}
                 } else JOptionPane.showMessageDialog(null,"Enter a value between -255 and 255");
